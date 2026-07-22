@@ -161,7 +161,14 @@
 
 .form-row {
   display: flex;
+  flex-direction: column;
   gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .form-row {
+    flex-direction: row;
+  }
 }
 
 .form-row > * {
