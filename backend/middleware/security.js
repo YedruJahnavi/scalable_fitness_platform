@@ -1,0 +1,142 @@
+const rateLimit = require('express-rate-limit');
+
+const { ipKeyGenerator } = rateLimit;
+
+const parseCsvEnv = (value) =>
+  (value || '')
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+
+const normalizeOrigin = (value) => {
+  if (!value || typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  try {
+    return new URL(trimmed).origin;
+  } catch {
+    // Fall back for malformed values that are still usable as host strings.
+    return trimmed.replace(/\/+$/, '');
+  }
+};
+
+const toInteger = (value, fallback) => parseInt(value, 10) || fallback;
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const allowedOrigins = Array.from(new Set([
+  ...parseCsvEnv(process.env.CORS_ALLOWED_ORIGINS),
+  process.env.FRONTEND_URL,
+  process.env.PROD_FRONTEND_URL,
+  process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+].map(normalizeOrigin).filter(Boolean)));
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const normalizedOrigin = normalizeOrigin(origin);
+
+    if (normalizedOrigin && allowedOrigins.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
+
+    // In development, be more lenient or log specifically
+    if (!isProduction) {
+      console.warn(`⚠️  CORS blocked origin: ${normalizedOrigin || origin}`);
+    }
+
+    // Instead of throwing an Error (which returns 403), we can pass false
+    // or provide more info. 
+    return callback(null, false);
+  },
+  credentials: true,
+  methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With', 
+    'Accept', 
+    'Origin',
+    'X-Request-Id'
+  ],
+  exposedHeaders: [
+    'RateLimit-Limit',
+    'RateLimit-Remaining',
+    'RateLimit-Reset',
+    'X-RateLimit-Limit',
+    'X-RateLimit-Remaining',
+    'X-RateLimit-Reset',
+    'X-Request-Id'
+  ],
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+  maxAge: 86400,
+};
+
+const createRateLimiter = ({ windowMs, limit, message, keyGenerator }) =>
+  rateLimit({
+    windowMs,
+    limit,
+    standardHeaders: true,
+    legacyHeaders: true,
+    skipFailedRequests: false,
+    skipSuccessfulRequests: false,
+    skip: (req) => req.method === 'OPTIONS',
+    keyGenerator,
+    handler: (req, res, _next, options) => {
+      res.status(429).json({
+        error: message,
+        retryAfterSeconds: Math.ceil(options.windowMs / 1000),
+      });
+    },
+  });
+
+const globalIpRateLimiter = createRateLimiter({
+  windowMs: toInteger(process.env.RATE_LIMIT_WINDOW_MS, 60_000),
+  limit: toInteger(process.env.RATE_LIMIT_MAX, 100),
+  message: 'Too many requests, please try again later.',
+  keyGenerator: (req) => ipKeyGenerator(req.ip),
+});
+
+const authRateLimiter = createRateLimiter({
+  windowMs: toInteger(process.env.AUTH_RATE_LIMIT_WINDOW_MS, 15 * 60_000),
+  limit: toInteger(process.env.AUTH_RATE_LIMIT_MAX, 10),
+  message: 'Too many authentication attempts, please try again later.',
+  keyGenerator: (req) => ipKeyGenerator(req.ip),
+});
+
+const authenticatedRateLimiter = createRateLimiter({
+  windowMs: toInteger(process.env.AUTHENTICATED_RATE_LIMIT_WINDOW_MS, 60_000),
+  limit: toInteger(process.env.AUTHENTICATED_RATE_LIMIT_MAX, 300),
+  message: 'Too many requests for this account, please slow down.',
+  keyGenerator: (req) => (req.user?.id ? `user:${req.user.id}` : `ip:${ipKeyGenerator(req.ip)}`),
+});
+
+const requireRole = (...roles) => (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+
+  if (!roles.includes(req.user.role)) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  return next();
+};
+
+module.exports = {
+  allowedOrigins,
+  authRateLimiter,
+  authenticatedRateLimiter,
+  corsOptions,
+  globalIpRateLimiter,
+  requireRole,
+};

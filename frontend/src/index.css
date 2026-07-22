@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ─── shadcn CSS variable compatibility layer ────────── */
+:root {
+  --background:       248 250 252;    /* slate-50 */
+  --foreground:       15 23 42;       /* slate-900 */
+  --card:             255 255 255;    /* white */
+  --card-foreground:  15 23 42;
+  --popover:          255 255 255;
+  --popover-foreground: 15 23 42;
+  --primary:          37 99 235;      /* blue-600 */
+  --primary-foreground: 255 255 255;
+  --secondary:        241 245 249;    /* slate-100 */
+  --secondary-foreground: 15 23 42;
+  --muted:            241 245 249;    /* slate-100 */
+  --muted-foreground: 100 116 139;    /* slate-500 */
+  --accent:           241 245 249;
+  --accent-foreground: 15 23 42;
+  --destructive:      239 68 68;      /* red-500 */
+  --destructive-foreground: 255 255 255;
+  --border:           226 232 240;    /* slate-200 */
+  --input:            226 232 240;
+  --ring:             37 99 235;      /* blue-600 */
+  --radius:           0.75rem;
+}
+
+@layer base {
+  * { border-color: rgb(var(--border)); }
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+  }
+}
+
+/* ─── Design Tokens ─────────────────────────────────── */
+:root {
+  --font-space:  'Outfit', sans-serif;
+  --font-lexend: 'Inter', sans-serif;
+
+  /* Brand */
+  --blue:    #2563EB;
+  --emerald: #10B981;
+  --pink:    #EC4899;
+  --amber:   #F59E0B;
+  --violet:  #8B5CF6;
+
+  /* Backgrounds */
+  --bg-base:   #F8FAFC;
+  --bg-card:   #FFFFFF;
+  
+  /* Text */
+  --text-1: #0F172A;
+  --text-2: #334155;
+  --text-3: #64748B;
+  --text-4: #94A3B8;
+
+  /* Borders */
+  --border:       #E2E8F0;
+  --border-light: #F1F5F9;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.025);
+  --shadow-md:   0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.025);
+  --shadow-lg:   0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.025);
+
+  /* Sidebar */
+  --sidebar-width: 76px;
+}
+
+/* ─── Reset ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-lexend);
+  background: var(--bg-base);
+  color: var(--text-1);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ─── Typography ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.font-space {
+  font-family: var(--font-space);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-4); }
+
+/* ─── Selection ──────────────────────────────────────── */
+::selection {
+  background: rgba(37, 99, 235, 0.2);
+  color: var(--blue);
+}
+
+/* ─── Utility classes ────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--emerald) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--border);
+}
+
+/* ─── Buttons ────────────────────────────────────────── */
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-lexend);
+}
+.btn-primary:hover {
+  background: #1D4ED8;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* ─── Cards ──────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: #CBD5E1;
+}
+
+/* ─── Animations ─────────────────────────────────────── */
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.spin-slow { animation: spin-slow 1.2s linear infinite; }
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(37,99,235,0.2); }
+  50%       { box-shadow: 0 0 16px rgba(37,99,235,0.5); }
+}
+.glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.4s ease forwards; }
+
+/* ─── Stat number ────────────────────────────────────── */
+.stat-value {
+  font-family: var(--font-space);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Safe area for mobile bottom tab bar ────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
+}
