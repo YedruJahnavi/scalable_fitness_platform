@@ -126,66 +126,7 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          <motion.div 
-            custom={5} initial="hidden" animate="visible" variants={fadeUpVariants}
-            className="hero-visuals"
-          >
-            {/* Abstract 3D/Floating UI elements */}
-            <div className="mockup-container">
-              <motion.div 
-                animate={{ y: [-15, 15, -15] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="floating-card primary-card"
-              >
-                <div className="card-header">
-                  <div className="icon-circle bg-blue"><Zap size={20} /></div>
-                  <div className="card-meta">
-                    <span className="card-title">Weekly Progress</span>
-                    <span className="card-subtitle">You're in the top 5%</span>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className="stat-row">
-                    <span className="stat-label">Workouts</span>
-                    <span className="stat-value">5 / 5</span>
-                  </div>
-                  <div className="progress-bar"><div className="progress-fill" style={{ width: '100%' }}></div></div>
-                  
-                  <div className="stat-row mt-4">
-                    <span className="stat-label">Active Calories</span>
-                    <span className="stat-value">4,250 kcal</span>
-                  </div>
-                  <div className="progress-bar"><div className="progress-fill bg-orange" style={{ width: '85%' }}></div></div>
-                </div>
-              </motion.div>
 
-              <motion.div 
-                animate={{ y: [10, -10, 10] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="floating-card secondary-card"
-              >
-                <div className="card-header">
-                  <div className="icon-circle bg-green"><Activity size={20} /></div>
-                  <div className="card-meta">
-                    <span className="card-title">Recovery Score</span>
-                    <span className="card-subtitle">Ready to train</span>
-                  </div>
-                </div>
-                <div className="score-circle">
-                  <span className="score-value">94</span>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                animate={{ y: [-5, 8, -5], rotate: [-2, 2, -2] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="floating-badge"
-              >
-                <Trophy size={16} className="text-yellow" />
-                <span>New Personal Record!</span>
-              </motion.div>
-            </div>
-          </motion.div>
         </motion.div>
       </section>
 
