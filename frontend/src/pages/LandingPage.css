@@ -349,8 +349,8 @@
 
 .primary-card {
   width: 320px;
-  top: 10%;
-  right: 10%;
+  top: 5%;
+  right: 5%;
   z-index: 2;
 }
 
@@ -363,14 +363,15 @@
 
 .secondary-card {
   width: 240px;
-  bottom: 10%;
-  left: 0;
+  bottom: 15%;
+  right: 25%;
+  left: auto;
   z-index: 1;
 }
 
 .floating-badge {
   position: absolute;
-  top: 45%;
+  top: 55%;
   right: -5%;
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
