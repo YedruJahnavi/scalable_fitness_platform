@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../lib/store';
 import { Mail, Lock, Zap, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import logoUrl from '../assets/logo.png';
 import './Login.css';
 
 export default function Login() {
@@ -36,7 +37,7 @@ export default function Login() {
       <div className="auth-card">
         <div className="auth-header">
           <div className="auth-logo">
-            <Zap size={28} />
+            <img src={logoUrl} alt="FitTrack Logo" style={{ width: 32, height: 32 }} />
           </div>
           <h1 className="auth-title">Welcome back</h1>
           <p className="auth-subtitle">Sign in to continue your fitness journey</p>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../lib/store';
 import { Mail, Lock, Zap, AlertCircle, Eye, EyeOff, User, Activity, Shield, Target, CheckCircle } from 'lucide-react';
+import logoUrl from '../assets/logo.png';
 import './Register.css';
 
 const PERKS = [
@@ -61,7 +62,7 @@ export default function Register() {
         
         <div className="split-brand">
           <div className="split-logo">
-            <Zap size={24} />
+            <img src={logoUrl} alt="FitTrack Logo" style={{ width: 32, height: 32 }} />
           </div>
           <div className="split-brand-text">FitTrack</div>
         </div>

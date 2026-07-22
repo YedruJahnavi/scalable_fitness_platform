@@ -6,27 +6,27 @@
   --font-display: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
 
-  /* Colors - Premium Dark Mode */
-  --color-bg-base: #050505;
-  --color-bg-elevated: #111111;
-  --color-bg-glass: rgba(255, 255, 255, 0.03);
+  /* Colors - Premium Light Mode */
+  --color-bg-base: #F8FAFC;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-glass: rgba(255, 255, 255, 0.7);
   
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: rgba(255, 255, 255, 0.6);
-  --color-text-muted: rgba(255, 255, 255, 0.4);
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
 
   /* Accents */
-  --color-accent-primary: #CCFF00; /* Neon Green */
+  --color-accent-primary: #2563EB; /* Royal Blue */
   --color-accent-secondary: #7C3AED; /* Electric Violet */
-  --color-accent-danger: #FF3B30;
-  --color-accent-success: #34C759;
+  --color-accent-danger: #EF4444;
+  --color-accent-success: #10B981;
 
   /* Borders & Shadows */
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-light: rgba(255, 255, 255, 0.2);
-  --shadow-glow: 0 0 20px rgba(204, 255, 0, 0.2);
-  --shadow-glow-hover: 0 0 30px rgba(204, 255, 0, 0.4);
-  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --color-border: rgba(15, 23, 42, 0.1);
+  --color-border-light: rgba(15, 23, 42, 0.05);
+  --shadow-glow: 0 4px 20px rgba(37, 99, 235, 0.15);
+  --shadow-glow-hover: 0 4px 30px rgba(37, 99, 235, 0.3);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.05);
 
   /* Layout */
   --sidebar-width: 80px;

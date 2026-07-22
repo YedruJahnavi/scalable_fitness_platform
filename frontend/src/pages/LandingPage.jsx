@@ -10,6 +10,7 @@ import {
   Flame,
   Dumbbell
 } from "lucide-react";
+import logoUrl from '../assets/logo.png';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -31,7 +32,7 @@ export default function LandingPage() {
         <div className="nav-content">
           <div className="logo">
             <div className="logo-icon">
-              <Activity size={24} strokeWidth={2.5} />
+              <img src={logoUrl} alt="FitTrack Logo" style={{ width: 28, height: 28 }} />
             </div>
             <span className="logo-text">FitTrack</span>
           </div>

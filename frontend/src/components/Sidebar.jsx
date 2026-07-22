@@ -7,6 +7,7 @@ import {
   ChevronRight, Settings, Menu
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoUrl from '../assets/logo.png';
 import './Sidebar.css';
 
 const NAV_ITEMS = [
@@ -38,7 +39,7 @@ function DesktopSidebar({ pathname, user, logout }) {
       {/* Logo */}
       <div className="sidebar-logo-container">
         <div className="sidebar-logo-icon">
-          <Zap size={20} fill="currentColor" />
+          <img src={logoUrl} alt="FitTrack Logo" style={{ width: 24, height: 24 }} />
         </div>
         <AnimatePresence>
           {expanded && (
