@@ -6,48 +6,63 @@ import {
   ArrowRight, 
   ShieldCheck,
   Zap,
-  BarChart3,
   Flame,
-  Dumbbell
+  Dumbbell,
+  CheckCircle2,
+  Trophy,
+  Users,
+  LineChart,
+  Smartphone
 } from "lucide-react";
 import logoUrl from '../assets/logo.png';
 import './LandingPage.css';
 
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  })
+};
+
 export default function LandingPage() {
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
     <div className="landing-page">
-      {/* Dynamic Background */}
+      {/* Background Decor */}
       <div className="landing-bg">
-        <div className="landing-noise"></div>
-        <motion.div style={{ y, opacity }} className="glow-orb-1" />
-        <motion.div style={{ y, opacity }} className="glow-orb-2" />
+        <div className="bg-blob blob-1"></div>
+        <div className="bg-blob blob-2"></div>
+        <div className="bg-blob blob-3"></div>
       </div>
 
       {/* Navigation */}
-      <nav className="nav-header container">
-        <div className="nav-content">
+      <nav className="nav-header">
+        <div className="nav-container">
           <div className="logo">
-            <div className="logo-icon">
-              <img src={logoUrl} alt="FitTrack Logo" style={{ width: 28, height: 28 }} />
+            <div className="logo-icon-wrap">
+              <img src={logoUrl} alt="FitTrack Logo" className="logo-img" />
             </div>
-            <span className="logo-text">FitTrack</span>
+            <span className="logo-text">FitTrack<span className="text-primary">.</span></span>
           </div>
           
           <div className="nav-links">
             <a href="#features" className="nav-link">Features</a>
-            <a href="#tech" className="nav-link">Technology</a>
-            <a href="#community" className="nav-link">Community</a>
+            <a href="#platform" className="nav-link">Platform</a>
+            <a href="#pricing" className="nav-link">Pricing</a>
           </div>
 
           <div className="nav-actions">
-            <Link to="/login" className="btn btn-outline">
-              Sign In
-            </Link>
-            <Link to="/register" className="btn btn-primary">
+            <Link to="/login" className="nav-login">Sign In</Link>
+            <Link to="/register" className="btn btn-primary nav-cta">
               Get Started
             </Link>
           </div>
@@ -55,180 +70,304 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-section container">
-        <div className="hero-grid">
-          
-          {/* Hero Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="hero-content"
-          >
+      <section className="hero-section">
+        <motion.div style={{ y: heroY, opacity }} className="hero-container">
+          <div className="hero-content">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="badge badge-glow"
+              custom={0} initial="hidden" animate="visible" variants={fadeUpVariants}
+              className="hero-badge"
             >
-              Platform v3.0 Early Access
+              <span className="badge-pulse"></span>
+              FitTrack OS 3.0 is now live
             </motion.div>
             
-            <h1 className="hero-title">
-              Redefine your<br />
-              <span className="text-gradient">potential.</span>
-            </h1>
+            <motion.h1 
+              custom={1} initial="hidden" animate="visible" variants={fadeUpVariants}
+              className="hero-title"
+            >
+              The intelligent way to <br />
+              <span className="text-gradient">transform your body.</span>
+            </motion.h1>
             
-            <p className="hero-subtitle">
-              Experience the pinnacle of fitness intelligence. Sync your devices, analyze metrics in real-time, and achieve your goals with elite algorithmic precision.
-            </p>
+            <motion.p 
+              custom={2} initial="hidden" animate="visible" variants={fadeUpVariants}
+              className="hero-subtitle"
+            >
+              Stop guessing. Start tracking. FitTrack connects your health data, generates AI-driven workout plans, and accelerates your fitness journey like never before.
+            </motion.p>
 
-            <div className="hero-actions">
-              <Link to="/register">
-                <motion.button
-                  whileTap={{ scale: 0.98 }}
-                  className="btn btn-primary"
-                >
-                  Start Training
-                  <ArrowRight size={20} />
-                </motion.button>
+            <motion.div 
+              custom={3} initial="hidden" animate="visible" variants={fadeUpVariants}
+              className="hero-actions"
+            >
+              <Link to="/register" className="btn btn-primary btn-lg group">
+                Start Training Free
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <a href="#features">
-                <button className="btn btn-outline">
-                  View Features
-                </button>
+              <a href="#features" className="btn btn-outline btn-lg">
+                Explore Features
               </a>
-            </div>
+            </motion.div>
             
-            <div className="hero-stats">
-              <div className="stat-item">
-                <span className="stat-value">42K+</span>
-                <span className="stat-label">Active Athletes</span>
+            <motion.div 
+              custom={4} initial="hidden" animate="visible" variants={fadeUpVariants}
+              className="hero-social-proof"
+            >
+              <div className="avatar-group">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64" alt="User" />
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64" alt="User" />
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64" alt="User" />
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64" alt="User" />
               </div>
-              <div className="stat-item">
-                <span className="stat-value" style={{ color: "var(--color-accent-primary)" }}>1.2M</span>
-                <span className="stat-label">Workouts Logged</span>
+              <div className="proof-text">
+                <div className="stars">★★★★★</div>
+                <p>Trusted by <strong>42,000+</strong> athletes worldwide</p>
               </div>
-              <div className="stat-item">
-                <span className="stat-value">99%</span>
-                <span className="stat-label">Goal Success Rate</span>
-              </div>
-            </div>
-          </motion.div>
-          
-          {/* Hero Visuals */}
+            </motion.div>
+          </div>
+
           <motion.div 
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="hero-visual"
+            custom={5} initial="hidden" animate="visible" variants={fadeUpVariants}
+            className="hero-visuals"
           >
-            {/* Main Interactive Card */}
-            <motion.div 
-              animate={{ y: [-10, 10, -10] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="glass-panel main-card animate-pulse-glow"
-              style={{ position: "absolute", right: 0, zIndex: 20 }}
-            >
-               <div className="card-header">
-                 <div>
-                   <h3 className="session-title font-display">Current Session</h3>
-                   <div className="session-status">
-                     <span className="status-dot animate-pulse"></span>
-                     High Intensity Interval
-                   </div>
-                 </div>
-                 <div className="icon-box">
-                   <Zap size={24} />
-                 </div>
-               </div>
-               
-               <div>
-                 <div className="metrics-large">
-                   <div>
-                     <div className="metric-value-huge text-gradient">164</div>
-                     <div className="stat-label" style={{ marginTop: 8 }}>BPM Average</div>
-                   </div>
-                 </div>
-                 
-                 <div className="metrics-grid">
-                   <div className="metric-small">
-                     <div className="metric-icon-red"><Flame size={20} /></div>
-                     <div>
-                       <div className="metric-value">842</div>
-                       <div className="stat-label">Calories</div>
-                     </div>
-                   </div>
-                   <div className="metric-small">
-                     <div className="metric-icon-green"><Activity size={20} /></div>
-                     <div>
-                       <div className="metric-value">45m</div>
-                       <div className="stat-label">Duration</div>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-            </motion.div>
+            {/* Abstract 3D/Floating UI elements */}
+            <div className="mockup-container">
+              <motion.div 
+                animate={{ y: [-15, 15, -15] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="floating-card primary-card"
+              >
+                <div className="card-header">
+                  <div className="icon-circle bg-blue"><Zap size={20} /></div>
+                  <div className="card-meta">
+                    <span className="card-title">Weekly Progress</span>
+                    <span className="card-subtitle">You're in the top 5%</span>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <div className="stat-row">
+                    <span className="stat-label">Workouts</span>
+                    <span className="stat-value">5 / 5</span>
+                  </div>
+                  <div className="progress-bar"><div className="progress-fill" style={{ width: '100%' }}></div></div>
+                  
+                  <div className="stat-row mt-4">
+                    <span className="stat-label">Active Calories</span>
+                    <span className="stat-value">4,250 kcal</span>
+                  </div>
+                  <div className="progress-bar"><div className="progress-fill bg-orange" style={{ width: '85%' }}></div></div>
+                </div>
+              </motion.div>
 
-            <motion.div 
-              animate={{ y: [15, -15, 15], rotate: [-5, 5, -5] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="glass-panel"
-              style={{ position: "absolute", left: 0, top: "25%", padding: "20px", display: "flex", gap: "16px", alignItems: "center", zIndex: 30 }}
-            >
-              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "var(--color-accent-secondary)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Dumbbell size={20} />
+              <motion.div 
+                animate={{ y: [10, -10, 10] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="floating-card secondary-card"
+              >
+                <div className="card-header">
+                  <div className="icon-circle bg-green"><Activity size={20} /></div>
+                  <div className="card-meta">
+                    <span className="card-title">Recovery Score</span>
+                    <span className="card-subtitle">Ready to train</span>
+                  </div>
+                </div>
+                <div className="score-circle">
+                  <span className="score-value">94</span>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                animate={{ y: [-5, 8, -5], rotate: [-2, 2, -2] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="floating-badge"
+              >
+                <Trophy size={16} className="text-yellow" />
+                <span>New Personal Record!</span>
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Logos Section */}
+      <section className="logos-section">
+        <p className="logos-title">Integrates seamlessly with your favorite health platforms</p>
+        <div className="logos-track">
+          <span>Apple Health</span>
+          <span className="dot">•</span>
+          <span>Google Fit</span>
+          <span className="dot">•</span>
+          <span>Garmin Connect</span>
+          <span className="dot">•</span>
+          <span>Fitbit</span>
+          <span className="dot">•</span>
+          <span>Strava</span>
+          <span className="dot">•</span>
+          <span>Oura</span>
+        </div>
+      </section>
+
+      {/* Features Bento Grid */}
+      <section id="features" className="features-section">
+        <div className="section-header text-center">
+          <h2 className="section-title">Everything you need to <br/>succeed. Nothing you don't.</h2>
+          <p className="section-desc">A unified ecosystem designed for athletes who demand the best.</p>
+        </div>
+
+        <div className="bento-grid">
+          {/* Feature 1: Large */}
+          <motion.div 
+            whileHover={{ y: -5 }}
+            className="bento-card col-span-2 row-span-2 bg-gradient-blue"
+          >
+            <div className="bento-content">
+              <div className="bento-icon"><Smartphone size={24} /></div>
+              <h3 className="bento-title">Adaptive AI Plans</h3>
+              <p className="bento-desc">Our proprietary algorithm analyzes your recovery, past performance, and biometric data to generate the perfect workout for you, every single day.</p>
+            </div>
+            <div className="bento-image-wrapper">
+              <div className="mock-ui">
+                <div className="mock-header">Today's Protocol</div>
+                <div className="mock-item"><CheckCircle2 size={16} className="text-green"/> Heavy Squats 5x5</div>
+                <div className="mock-item"><CheckCircle2 size={16} className="text-green"/> RDLs 3x8</div>
+                <div className="mock-item"><div className="circle-empty"></div> Leg Press 3x12</div>
               </div>
-              <div>
-                <div style={{ fontWeight: 600 }}>New PR Achieved!</div>
-                <div style={{ fontSize: 12, color: "var(--color-text-secondary)" }}>Deadlift: 315 lbs</div>
-              </div>
-            </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Feature 2: Small */}
+          <motion.div 
+            whileHover={{ y: -5 }}
+            className="bento-card"
+          >
+            <div className="bento-content">
+              <div className="bento-icon text-orange"><Flame size={24} /></div>
+              <h3 className="bento-title">Advanced Metrics</h3>
+              <p className="bento-desc">Track macros, calories, and volume load in real-time.</p>
+            </div>
+          </motion.div>
+
+          {/* Feature 3: Small */}
+          <motion.div 
+            whileHover={{ y: -5 }}
+            className="bento-card"
+          >
+            <div className="bento-content">
+              <div className="bento-icon text-purple"><LineChart size={24} /></div>
+              <h3 className="bento-title">Visual Progress</h3>
+              <p className="bento-desc">Beautiful charts that map your journey and predict your plateau.</p>
+            </div>
+          </motion.div>
+
+          {/* Feature 4: Wide */}
+          <motion.div 
+            whileHover={{ y: -5 }}
+            className="bento-card col-span-2 flex-row-card"
+          >
+            <div className="bento-content">
+              <div className="bento-icon text-green"><ShieldCheck size={24} /></div>
+              <h3 className="bento-title">Elite Coaching Access</h3>
+              <p className="bento-desc">Connect with certified professionals who can monitor your stats, adjust your programming, and provide direct feedback through our secure platform.</p>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Bento Grid Features */}
-      <section id="features" className="features-section container">
-        <div className="section-header">
-          <h2 className="section-title text-gradient">Engineered for elite performance.</h2>
-          <p className="hero-subtitle" style={{ margin: "0 auto" }}>Everything you need to track, analyze, and optimize your fitness journey in one unified, intelligent platform.</p>
-        </div>
-        
-        <div className="feature-grid">
-          <motion.div whileHover={{ y: -5 }} className="glass-panel feature-card feat-large">
-            <div>
-              <div className="feature-icon bg-primary-light"><Activity size={32} /></div>
-              <h3 className="feature-title">Biometric Intelligence</h3>
-              <p className="feature-desc">Connect wearables and let our advanced algorithms analyze your heart rate variability, sleep debt, and recovery status in real-time.</p>
+      {/* How it Works / Steps */}
+      <section id="platform" className="steps-section">
+        <div className="steps-container">
+          <div className="steps-content">
+            <h2 className="section-title">From day one to day one hundred.</h2>
+            <p className="section-desc text-left">We've streamlined the entire process so you can focus on putting in the work.</p>
+            
+            <div className="steps-list">
+              <div className="step-item">
+                <div className="step-number">01</div>
+                <div>
+                  <h4 className="step-title">Connect your devices</h4>
+                  <p className="step-desc">Sync your Apple Watch, Garmin, or Oura ring in one click.</p>
+                </div>
+              </div>
+              <div className="step-item">
+                <div className="step-number">02</div>
+                <div>
+                  <h4 className="step-title">Set your target</h4>
+                  <p className="step-desc">Tell us if you want to lose weight, build muscle, or increase endurance.</p>
+                </div>
+              </div>
+              <div className="step-item">
+                <div className="step-number">03</div>
+                <div>
+                  <h4 className="step-title">Execute the plan</h4>
+                  <p className="step-desc">Follow the daily generated protocols and watch the results compound.</p>
+                </div>
+              </div>
             </div>
-          </motion.div>
-          
-          <motion.div whileHover={{ y: -5 }} className="glass-panel feature-card feat-small">
-            <div>
-              <div className="feature-icon bg-purple-light"><Target size={32} /></div>
-              <h3 className="feature-title">Adaptive AI Plans</h3>
-              <p className="feature-desc">Workouts that dynamically evolve based on your daily recovery metrics and performance history.</p>
-            </div>
-          </motion.div>
-          
-          <motion.div whileHover={{ y: -5 }} className="glass-panel feature-card feat-small">
-            <div>
-              <div className="feature-icon bg-pink-light"><ShieldCheck size={32} /></div>
-              <h3 className="feature-title">Secure Coaching</h3>
-              <p className="feature-desc">Direct, encrypted communication channels to elite fitness coaches and nutritionists worldwide.</p>
-            </div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -5 }} className="glass-panel feature-card feat-large">
-            <div>
-              <div className="feature-icon bg-white-light"><Activity size={32} /></div>
-              <h3 className="feature-title">Global Community Hub</h3>
-              <p className="feature-desc">Join specialized groups, climb the global leaderboard, and interact with fellow athletes in real-time. Your tribe is waiting.</p>
-            </div>
-          </motion.div>
+          </div>
+          <div className="steps-visual">
+             <div className="circle-graphic">
+               <div className="pulse-ring"></div>
+               <div className="center-icon"><Dumbbell size={48} /></div>
+             </div>
+          </div>
         </div>
       </section>
+
+      {/* CTA Section */}
+      <section className="cta-section">
+        <div className="cta-container glass-panel">
+          <h2 className="cta-title">Ready to unlock your potential?</h2>
+          <p className="cta-desc">Join thousands of athletes who have already transformed their training.</p>
+          <div className="cta-actions">
+            <Link to="/register" className="btn btn-primary btn-lg">
+              Get Started for Free
+            </Link>
+            <Link to="/login" className="btn btn-outline btn-lg" style={{ background: 'white' }}>
+              Sign In
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-top">
+          <div className="footer-brand">
+            <div className="logo">
+              <div className="logo-icon-wrap">
+                <img src={logoUrl} alt="FitTrack Logo" className="logo-img" />
+              </div>
+              <span className="logo-text">FitTrack</span>
+            </div>
+            <p className="footer-desc">The ultimate operating system for athletes, coaches, and fitness enthusiasts.</p>
+          </div>
+          <div className="footer-links">
+            <div className="link-group">
+              <h4>Product</h4>
+              <a href="#">Features</a>
+              <a href="#">Integrations</a>
+              <a href="#">Pricing</a>
+              <a href="#">Changelog</a>
+            </div>
+            <div className="link-group">
+              <h4>Company</h4>
+              <a href="#">About</a>
+              <a href="#">Blog</a>
+              <a href="#">Careers</a>
+              <a href="#">Contact</a>
+            </div>
+            <div className="link-group">
+              <h4>Legal</h4>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} FitTrack Elite Core. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
