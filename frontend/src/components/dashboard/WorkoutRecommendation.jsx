@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Zap, Clock, Flame, ChevronRight } from 'lucide-react';
+import './WorkoutRecommendation.css';
 
 const RECOMMENDATIONS = [
   {
@@ -7,27 +8,21 @@ const RECOMMENDATIONS = [
     duration: '25 min',
     kcal: '320',
     intensity: 'High',
-    color: '#EF4444', // red-500
-    bg: 'bg-red-50',
-    border: 'border-red-100',
+    color: '#FF6B35', // orange
   },
   {
     label: 'Mobility Flow',
     duration: '15 min',
     kcal: '90',
     intensity: 'Low',
-    color: '#10B981', // emerald-500
-    bg: 'bg-emerald-50',
-    border: 'border-emerald-100',
+    color: '#34D399', // green
   },
   {
     label: 'Strength Circuit',
     duration: '40 min',
     kcal: '480',
     intensity: 'Medium',
-    color: '#3B82F6', // blue-500
-    bg: 'bg-blue-50',
-    border: 'border-blue-100',
+    color: '#7C3AED', // purple
   },
 ];
 
@@ -35,68 +30,62 @@ export function WorkoutRecommendation({ itemVariants }) {
   return (
     <motion.section
       variants={itemVariants}
-      className="rounded-3xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8 flex flex-col gap-5"
+      className="workout-recommendation"
     >
-      {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="recommendation-header">
         <div>
-          <h2 className="text-xl font-space font-bold text-slate-900">Recommended</h2>
-          <p className="text-sm text-slate-500 font-medium mt-0.5">Based on your readiness</p>
+          <h2 className="recommendation-title">Recommended</h2>
+          <p className="recommendation-subtitle">Based on your readiness</p>
         </div>
-        <div className="w-9 h-9 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center">
-          <Zap className="w-4 h-4 text-blue-600" />
+        <div className="recommendation-icon-wrap">
+          <Zap size={16} />
         </div>
       </div>
 
-      {/* Recommendation list */}
-      <div className="flex flex-col gap-3">
+      <div className="recommendation-list">
         {RECOMMENDATIONS.map((rec, i) => (
           <motion.button
             key={i}
             whileHover={{ x: 4 }}
             transition={{ duration: 0.15 }}
-            className={`w-full text-left ${rec.bg} border ${rec.border} rounded-2xl p-4 flex items-center gap-4 group cursor-pointer shadow-sm`}
+            className="recommendation-item"
           >
-            {/* Color dot */}
             <div
-              className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ backgroundColor: rec.color }}
+              className="item-dot"
+              style={{ backgroundColor: rec.color, color: rec.color }}
             />
 
-            {/* Details */}
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-900 truncate">{rec.label}</p>
-              <div className="flex items-center gap-3 mt-1">
-                <span className="flex items-center gap-1 text-[11px] text-slate-500">
-                  <Clock size={10} />
+            <div className="item-details">
+              <p className="item-title">{rec.label}</p>
+              <div className="item-meta">
+                <span className="item-meta-info">
+                  <Clock size={12} />
                   {rec.duration}
                 </span>
-                <span className="flex items-center gap-1 text-[11px] text-slate-500">
-                  <Flame size={10} />
+                <span className="item-meta-info">
+                  <Flame size={12} />
                   {rec.kcal} kcal
                 </span>
               </div>
             </div>
 
-            {/* Intensity badge + arrow */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="item-badge-wrap">
               <span
-                className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-slate-100 shadow-sm"
+                className="item-badge"
                 style={{ color: rec.color }}
               >
                 {rec.intensity}
               </span>
               <ChevronRight
-                size={14}
-                className="text-slate-300 group-hover:text-slate-600 transition-colors"
+                size={16}
+                className="item-chevron"
               />
             </div>
           </motion.button>
         ))}
       </div>
 
-      {/* CTA */}
-      <button className="w-full mt-auto py-3 rounded-xl border border-slate-200 text-sm font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 hover:bg-slate-50 shadow-sm transition-all">
+      <button className="recommendation-cta">
         View All Workouts →
       </button>
     </motion.section>

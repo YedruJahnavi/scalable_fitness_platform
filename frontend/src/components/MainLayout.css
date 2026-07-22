@@ -1,0 +1,18 @@
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+}
+
+.main-content {
+  flex: 1;
+  transition: margin-left var(--transition-normal);
+  padding-bottom: 80px; /* For mobile tab bar */
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding-bottom: 0;
+  }
+}

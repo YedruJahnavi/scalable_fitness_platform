@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { cn } from '../lib/utils';
 import api from '../lib/api';
 import { 
   Users, 
@@ -13,6 +12,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import './Community.css';
 
 export default function Community() {
   const [activeTab, setActiveTab] = useState('leaderboard');
@@ -41,9 +41,7 @@ export default function Community() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const handleJoinChallenge = async (challengeId) => {
@@ -66,38 +64,31 @@ export default function Community() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 relative font-lexend">
+    <div className="community-container">
       <motion.main 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="pt-8 md:pt-12 pb-24 px-6 sm:px-8 md:px-10 max-w-7xl mx-auto space-y-10 relative z-10"
+        className="community-main"
       >
         {/* Header */}
         <motion.header 
           variants={itemVariants}
-          className="flex flex-col md:flex-row md:justify-between md:items-end gap-6"
+          className="community-header"
         >
           <div>
-            <h1 className="font-space text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
-              Community
-            </h1>
-            <p className="text-slate-500 font-light text-lg mt-2 max-w-md">
+            <h1 className="community-title">Community</h1>
+            <p className="community-subtitle">
               Connect, compete, and grow with elite athletes globally.
             </p>
           </div>
           
-          <div className="flex bg-slate-200 p-1 rounded-xl self-start md:self-auto">
+          <div className="tabs-container">
             {['leaderboard', 'feed', 'challenges'].map((tab) => (
               <button 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={cn(
-                  "px-5 py-2.5 rounded-[10px] font-lexend font-medium text-sm transition-all capitalize",
-                  activeTab === tab 
-                    ? 'bg-white text-slate-900 shadow-sm' 
-                    : 'text-slate-600 hover:text-slate-900 bg-transparent hover:bg-slate-200/50'
-                )}
+                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
               >
                 {tab === 'leaderboard' ? 'Rankings' : tab}
               </button>
@@ -112,10 +103,10 @@ export default function Community() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex h-[40vh] flex-col items-center justify-center gap-6"
+              className="loading-state"
             >
-              <div className="w-12 h-12 border-2 border-transparent border-t-blue-600 rounded-full animate-spin" />
-              <p className="font-lexend text-sm font-medium text-blue-600 animate-pulse uppercase tracking-widest">Syncing...</p>
+              <div className="loading-spinner" />
+              <p className="loading-text">Syncing...</p>
             </motion.div>
           ) : activeTab === 'leaderboard' ? (
             <motion.section 
@@ -124,68 +115,56 @@ export default function Community() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.4 }}
-              className="space-y-8"
+              style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             >
-              <div className="flex items-center gap-4">
-                <h3 className="text-2xl font-space font-bold text-slate-900 tracking-tight">Global Rankings</h3>
-                <div className="flex px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-sm items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Live</span>
+              <div className="section-header">
+                <h3 className="section-title">Global Rankings</h3>
+                <div className="live-badge">
+                  <div className="live-dot" />
+                  <span className="live-text">Live</span>
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 gap-4">
+              <div>
                 {leaderboard.length === 0 ? (
-                  <div className="bg-white border border-slate-200 border-dashed p-12 text-center rounded-3xl flex flex-col items-center gap-4">
-                    <Trophy className="text-slate-300" size={32} />
-                    <p className="text-slate-500 font-light text-base">No rankings available yet.</p>
+                  <div className="empty-state">
+                    <Trophy className="empty-icon" size={32} />
+                    <p className="empty-text">No rankings available yet.</p>
                   </div>
                 ) : (
                   <>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div className="top-3-grid">
                       {leaderboard.slice(0, 3).map((user, index) => (
                         <motion.div 
                           key={user._id}
                           variants={itemVariants}
-                          className={cn(
-                            "relative overflow-hidden p-8 rounded-3xl flex flex-col items-center text-center gap-4 bg-white border border-slate-200 shadow-md",
-                          )}
+                          className="top-card"
                         >
-                          <div className={cn(
-                            "absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center font-space font-bold text-lg shadow-sm border border-slate-100",
-                            index === 0 ? "bg-[#FFF9E5] text-[#B8860B]" :
-                            index === 1 ? "bg-slate-100 text-slate-600" :
-                            "bg-[#FFF0E6] text-[#CD7F32]"
-                          )}>
+                          <div className={`rank-badge rank-${index + 1}`}>
                             #{index + 1}
                           </div>
                           
-                          <div className={cn(
-                            "w-20 h-20 rounded-full flex items-center justify-center font-space font-bold text-3xl mb-2 shadow-sm border border-slate-100",
-                            index === 0 ? "bg-gradient-to-br from-[#FFD700]/20 to-[#FFA500]/20 text-[#B8860B]" :
-                            index === 1 ? "bg-gradient-to-br from-slate-200 to-slate-100 text-slate-600" :
-                            "bg-gradient-to-br from-[#CD7F32]/20 to-[#8B4513]/20 text-[#CD7F32]"
-                          )}>
+                          <div className={`avatar-large avatar-${index + 1}`}>
                             {user.name.charAt(0)}
                           </div>
                           
                           <div>
-                            <h4 className="text-xl font-space font-bold text-slate-900 mb-1">{user.name}</h4>
-                            <div className="flex items-center justify-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
-                              <ShieldCheck size={14} className="text-blue-500" /> Elite
+                            <h4 className="user-name">{user.name}</h4>
+                            <div className="elite-badge" style={{ justifyContent: 'center' }}>
+                              <ShieldCheck size={14} className="elite-icon" /> Elite
                             </div>
                           </div>
                           
-                          <div className="w-full flex justify-between border-t border-slate-100 pt-4 mt-2">
-                            <div>
-                              <p className="text-xs text-slate-400 uppercase mb-1">Sessions</p>
-                              <p className="text-lg font-space font-bold text-slate-900">{user.workoutCount}</p>
+                          <div className="card-stats">
+                            <div className="stat-group" style={{ alignItems: 'flex-start' }}>
+                              <p className="stat-group-label">Sessions</p>
+                              <p className="stat-group-val">{user.workoutCount}</p>
                             </div>
-                            <div>
-                              <p className="text-xs text-slate-400 uppercase mb-1">Calories</p>
-                              <div className="flex items-center gap-1 text-orange-500">
+                            <div className="stat-group" style={{ alignItems: 'flex-end' }}>
+                              <p className="stat-group-label">Calories</p>
+                              <div className="flame-val">
                                 <Flame size={14} />
-                                <p className="text-lg font-space font-bold">{user.totalCalories}</p>
+                                <p className="stat-group-val" style={{ color: 'var(--color-text-primary)' }}>{user.totalCalories}</p>
                               </div>
                             </div>
                           </div>
@@ -193,42 +172,41 @@ export default function Community() {
                       ))}
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="other-ranks">
                       {leaderboard.slice(3).map((user, index) => (
                         <motion.div 
                           key={user._id} 
                           variants={itemVariants}
-                          whileHover={{ x: 8 }}
-                          className="group bg-white p-5 sm:p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 border border-slate-100 shadow-sm transition-all"
+                          className="rank-row"
                         >
-                          <div className="flex items-center gap-5">
-                            <div className="w-12 h-12 rounded-xl bg-slate-50 flex-shrink-0 flex items-center justify-center font-space font-bold text-xl text-slate-400 border border-slate-100">
+                          <div className="rank-row-left">
+                            <div className="rank-num-badge">
                               #{index + 4}
                             </div>
-                            <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center font-space font-bold text-lg text-slate-700">
+                            <div className="rank-avatar">
                               {user.name.charAt(0)}
                             </div>
                             <div>
-                              <h4 className="text-lg font-space font-bold text-slate-900">{user.name}</h4>
-                              <div className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
-                                <ShieldCheck size={12} className="text-blue-400" /> Member
+                              <h4 className="rank-user-name">{user.name}</h4>
+                              <div className="member-badge">
+                                <ShieldCheck size={12} className="member-icon" /> Member
                               </div>
                             </div>
                           </div>
                           
-                          <div className="flex items-center gap-8 sm:gap-12 w-full sm:w-auto justify-between sm:justify-end">
-                            <div>
-                              <p className="text-[10px] font-medium text-slate-400 mb-1 uppercase tracking-wider">Sessions</p>
-                              <p className="text-xl font-space font-bold text-slate-900">{user.workoutCount}</p>
+                          <div className="rank-row-right">
+                            <div className="stat-group">
+                              <p className="stat-group-label">Sessions</p>
+                              <p className="stat-group-val">{user.workoutCount}</p>
                             </div>
-                            <div>
-                              <p className="text-[10px] font-medium text-slate-400 mb-1 uppercase tracking-wider">Calories</p>
-                              <div className="flex items-center gap-1.5 text-orange-500">
+                            <div className="stat-group">
+                              <p className="stat-group-label">Calories</p>
+                              <div className="flame-val">
                                 <Flame size={16} />
-                                <p className="text-xl font-space font-bold">{user.totalCalories}</p>
+                                <p className="stat-group-val" style={{ color: 'var(--color-text-primary)' }}>{user.totalCalories}</p>
                               </div>
                             </div>
-                            <div className="hidden sm:flex text-slate-300 group-hover:text-blue-500 transition-colors">
+                            <div className="row-arrow">
                               <ArrowRight size={20} />
                             </div>
                           </div>
@@ -246,35 +224,36 @@ export default function Community() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.4 }}
-              className="space-y-8 max-w-3xl mx-auto"
+              className="feed-container"
+              style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             >
-              <div className="flex items-center gap-3">
-                <Globe size={24} className="text-slate-700" />
-                <h3 className="text-2xl font-space font-bold text-slate-900 tracking-tight">Activity Feed</h3>
+              <div className="section-header" style={{ marginBottom: 0 }}>
+                <Globe size={24} style={{ color: 'var(--color-text-secondary)' }} />
+                <h3 className="section-title">Activity Feed</h3>
               </div>
               
-              <div className="grid grid-cols-1 gap-6">
+              <div className="feed-grid">
                 {posts.length === 0 ? (
-                  <div className="bg-white border border-slate-200 border-dashed p-12 text-center rounded-3xl flex flex-col items-center gap-4">
-                    <Users className="text-slate-300" size={32} />
-                    <p className="text-slate-500 font-light text-base">No activity in the feed yet.</p>
+                  <div className="empty-state">
+                    <Users className="empty-icon" size={32} />
+                    <p className="empty-text">No activity in the feed yet.</p>
                   </div>
                 ) : posts.map((post) => (
-                   <motion.div key={post._id} variants={itemVariants} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
-                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 font-space font-bold flex items-center justify-center text-lg">
+                   <motion.div key={post._id} variants={itemVariants} className="post-card">
+                     <div className="post-header">
+                        <div className="post-avatar">
                           {post.userId?.name?.charAt(0) || '?'}
                         </div>
                         <div>
-                          <h4 className="text-lg font-space font-bold text-slate-900">{post.userId?.name}</h4>
-                          <span className="text-xs font-medium text-slate-500">{new Date(post.createdAt).toLocaleDateString()}</span>
+                          <h4 className="post-user">{post.userId?.name}</h4>
+                          <span className="post-date">{new Date(post.createdAt).toLocaleDateString()}</span>
                         </div>
                      </div>
-                     <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner">
-                       <p className="text-slate-700 font-light text-[15px] leading-relaxed">{post.content}</p>
+                     <div className="post-content">
+                       <p>{post.content}</p>
                      </div>
-                     <div className="flex items-center gap-4 pt-1">
-                        <button className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-600 hover:text-red-500 transition-colors bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl border border-slate-200">
+                     <div className="post-actions">
+                        <button className="respect-btn">
                           <Flame size={14} /> {post.likes?.length || 0} Respects
                         </button>
                      </div>
@@ -289,58 +268,58 @@ export default function Community() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.4 }}
-              className="space-y-8"
+              style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             >
-              <div className="flex items-center gap-3">
-                <Target size={24} className="text-slate-700" />
-                <h3 className="text-2xl font-space font-bold text-slate-900 tracking-tight">Active Challenges</h3>
+              <div className="section-header">
+                <Target size={24} style={{ color: 'var(--color-text-secondary)' }} />
+                <h3 className="section-title">Active Challenges</h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="challenges-grid">
                 {challenges.length === 0 ? (
-                  <div className="col-span-full bg-white border border-slate-200 border-dashed p-12 text-center rounded-3xl flex flex-col items-center gap-4">
-                    <Target className="text-slate-300" size={32} />
-                    <p className="text-slate-500 font-light text-base">No active challenges at the moment.</p>
+                  <div className="empty-state" style={{ gridColumn: '1 / -1' }}>
+                    <Target className="empty-icon" size={32} />
+                    <p className="empty-text">No active challenges at the moment.</p>
                   </div>
                 ) : challenges.map((challenge) => (
                   <motion.div 
                     key={challenge._id} 
                     variants={itemVariants}
-                    className="bg-white p-6 sm:p-8 rounded-2xl flex flex-col justify-between group relative overflow-hidden border border-slate-200 shadow-sm min-h-[340px] transition-all hover:shadow-md hover:border-slate-300"
+                    className="challenge-card"
                   >
-                    <div className="relative z-10 mb-6">
-                      <div className="flex justify-between items-start mb-6">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-100 text-blue-700 border border-blue-200">
-                          <Sparkles size={12} className="text-blue-600" />
-                          <span className="text-[10px] font-semibold uppercase tracking-wider">Featured</span>
+                    <div style={{ zIndex: 10 }}>
+                      <div className="challenge-header-info">
+                        <div className="featured-badge">
+                          <Sparkles size={12} />
+                          <span>Featured</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-slate-400">
+                        <div className="participants-count">
                           <Users size={14} />
-                          <span className="text-sm font-space font-bold">{challenge.participant_count || 0}</span>
+                          <span>{challenge.participant_count || 0}</span>
                         </div>
                       </div>
                       
-                      <h4 className="text-xl font-space font-bold text-slate-900 mb-3 tracking-tight group-hover:text-blue-600 transition-colors line-clamp-2">{challenge.challengeName}</h4>
-                      <p className="text-sm text-slate-500 font-light leading-relaxed line-clamp-3">
+                      <h4 className="challenge-name">{challenge.challengeName}</h4>
+                      <p className="challenge-desc">
                         {challenge.description || `Reach ${challenge.goalValue} ${challenge.goalType} before the deadline.`}
                       </p>
                     </div>
                     
-                    <div className="space-y-5 relative z-10 mt-auto">
-                      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                    <div className="challenge-footer">
+                      <div className="challenge-ends">
                         <Calendar size={14} />
                         Ends: {new Date(challenge.endDate).toLocaleDateString()}
                       </div>
                       
                       {challenge.is_joined ? (
-                        <div className="w-full bg-emerald-50 border border-emerald-200 py-3 rounded-xl flex items-center justify-center gap-2 text-emerald-700">
+                        <div className="enrolled-badge">
                           <ShieldCheck size={18} />
-                          <span className="font-semibold text-sm">Enrolled</span>
+                          <span>Enrolled</span>
                         </div>
                       ) : (
                         <button 
                           onClick={() => handleJoinChallenge(challenge._id)}
-                          className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-slate-800 transition-colors"
+                          className="join-btn"
                         >
                           Join Challenge
                         </button>

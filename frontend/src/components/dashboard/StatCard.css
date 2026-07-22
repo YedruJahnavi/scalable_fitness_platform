@@ -1,0 +1,114 @@
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, var(--stat-color, rgba(255,255,255,0.1)), transparent 50%);
+  opacity: 0.05;
+  transition: opacity var(--transition-normal);
+}
+
+.stat-card:hover::before {
+  opacity: 0.15;
+}
+
+.stat-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 10;
+}
+
+.stat-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: color-mix(in srgb, var(--stat-color) 15%, transparent);
+}
+
+.stat-trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.stat-trend.positive {
+  color: var(--color-accent-primary);
+  background-color: color-mix(in srgb, var(--color-accent-primary) 10%, transparent);
+}
+.stat-trend.negative {
+  color: var(--color-accent-danger);
+  background-color: color-mix(in srgb, var(--color-accent-danger) 10%, transparent);
+}
+
+.stat-value-wrap {
+  position: relative;
+  z-index: 10;
+}
+
+.stat-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+}
+
+.stat-unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stat-color);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.stat-bar-container {
+  position: relative;
+  z-index: 10;
+  margin-top: auto;
+  height: 4px;
+  width: 100%;
+  border-radius: 999px;
+  background-color: var(--color-border);
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--stat-color);
+}

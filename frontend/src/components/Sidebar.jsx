@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, Flame, Activity, ClipboardEdit,
   Users, UserCircle, LogOut, Target, Zap, ShieldCheck,
-  ChevronRight, Settings, Menu, X
+  ChevronRight, Settings, Menu
 } from 'lucide-react';
-import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import './Sidebar.css';
 
 const NAV_ITEMS = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard',     accent: '#CCFF00' },
@@ -18,15 +18,11 @@ const NAV_ITEMS = [
   { href: '/profile',   icon: UserCircle,      label: 'Profile',       accent: '#CCFF00' },
 ];
 
-/* ─── Desktop Sidebar ───────────────────────────────────────── */
 function DesktopSidebar({ pathname, user, logout }) {
   const [expanded, setExpanded] = useState(false);
 
-  // keep CSS variable in sync
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      '--sidebar-width', expanded ? '260px' : '76px'
-    );
+    document.documentElement.style.setProperty('--sidebar-width', expanded ? '260px' : '76px');
   }, [expanded]);
 
   return (
@@ -35,15 +31,14 @@ function DesktopSidebar({ pathname, user, logout }) {
       transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
-      className="hidden md:flex fixed left-0 top-0 h-screen flex-col bg-[#080808] border-r border-white/[0.06] z-[100] overflow-hidden"
+      className="desktop-sidebar"
     >
-      {/* Subtle vertical glow line on right edge */}
-      <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#CCFF00]/20 to-transparent" />
+      <div className="sidebar-glow-line" />
 
-      {/* ── Logo ── */}
-      <div className="flex items-center gap-3 px-[18px] py-7 shrink-0">
-        <div className="w-10 h-10 rounded-xl bg-[#CCFF00] flex items-center justify-center text-black shadow-[0_0_24px_rgba(204,255,0,0.35)] shrink-0">
-          <Zap className="w-5 h-5" fill="currentColor" />
+      {/* Logo */}
+      <div className="sidebar-logo-container">
+        <div className="sidebar-logo-icon">
+          <Zap size={20} fill="currentColor" />
         </div>
         <AnimatePresence>
           {expanded && (
@@ -52,36 +47,36 @@ function DesktopSidebar({ pathname, user, logout }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -8 }}
               transition={{ duration: 0.2 }}
-              className="overflow-hidden whitespace-nowrap"
+              style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
             >
-              <p className="text-[17px] font-space font-bold tracking-tight text-white leading-none">FitTrack</p>
-              <p className="text-[9px] font-space font-bold text-[#CCFF00] tracking-[0.35em] mt-0.5">ELITE CORE</p>
+              <div className="sidebar-logo-text">FitTrack</div>
+              <div className="sidebar-logo-sub">ELITE CORE</div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* ── Section label ── */}
-      <div className="px-[18px] mb-3">
+      {/* Label */}
+      <div className="sidebar-label">
         <AnimatePresence>
           {expanded ? (
-            <motion.p
+            <motion.div
               key="label"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-[9px] font-bold text-white/20 uppercase tracking-[0.35em]"
+              className="sidebar-label-text"
             >
               Navigation
-            </motion.p>
+            </motion.div>
           ) : (
-            <div key="dot" className="w-1 h-1 rounded-full bg-white/20 mx-auto" />
+            <div key="dot" className="sidebar-dot" />
           )}
         </AnimatePresence>
       </div>
 
-      {/* ── Nav items ── */}
-      <nav className="flex-1 px-3 space-y-1 overflow-y-auto overflow-x-hidden py-2">
+      {/* Nav items */}
+      <nav className="sidebar-nav">
         {NAV_ITEMS.map(({ href, icon: Icon, label, accent }) => {
           const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
           return (
@@ -89,25 +84,18 @@ function DesktopSidebar({ pathname, user, logout }) {
               key={href}
               to={href}
               title={!expanded ? label : undefined}
-              className={cn(
-                "relative flex items-center gap-3.5 rounded-xl h-11 px-[14px] group transition-all duration-200",
-                isActive
-                  ? "bg-white/[0.06] text-white"
-                  : "text-white/35 hover:text-white/80 hover:bg-white/[0.04]"
-              )}
+              className={`sidebar-link ${isActive ? 'active' : ''}`}
             >
-              {/* Active left bar */}
               {isActive && (
                 <motion.div
                   layoutId="activeBar"
-                  className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full"
-                  style={{ backgroundColor: accent }}
+                  style={{ position: 'absolute', left: 0, top: 8, bottom: 8, width: 3, borderRadius: '0 4px 4px 0', backgroundColor: accent }}
                   transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
               )}
 
               <Icon
-                className="w-[18px] h-[18px] shrink-0 transition-transform duration-200 group-hover:scale-110"
+                className="sidebar-icon"
                 style={isActive ? { color: accent } : {}}
               />
 
@@ -118,45 +106,37 @@ function DesktopSidebar({ pathname, user, logout }) {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -6 }}
                     transition={{ duration: 0.18 }}
-                    className="text-[13px] font-medium whitespace-nowrap overflow-hidden"
+                    className="sidebar-link-text"
                   >
                     {label}
                   </motion.span>
                 )}
               </AnimatePresence>
 
-              {/* Active glow dot */}
               {isActive && (
                 <motion.div
-                  className="absolute inset-0 rounded-xl pointer-events-none"
-                  style={{ boxShadow: `inset 0 0 20px ${accent}10` }}
+                  style={{ position: 'absolute', inset: 0, borderRadius: 12, pointerEvents: 'none', boxShadow: `inset 0 0 20px ${accent}10` }}
                 />
               )}
             </Link>
           );
         })}
 
-        {/* Coach section */}
         {user?.role === 'coach' && (
           <>
-            <div className="h-px bg-white/[0.06] mx-2 my-3" />
+            <div className="sidebar-divider" />
             <Link
               to="/coach"
               title={!expanded ? "Roster" : undefined}
-              className={cn(
-                "relative flex items-center gap-3.5 rounded-xl h-11 px-[14px] transition-all duration-200",
-                pathname.startsWith('/coach')
-                  ? "bg-white/[0.06] text-white"
-                  : "text-white/35 hover:text-white/80 hover:bg-white/[0.04]"
-              )}
+              className={`sidebar-link ${pathname.startsWith('/coach') ? 'active' : ''}`}
             >
               {pathname.startsWith('/coach') && (
-                <motion.div layoutId="activeBar" className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#7C3AED]" />
+                <motion.div layoutId="activeBar" style={{ position: 'absolute', left: 0, top: 8, bottom: 8, width: 3, borderRadius: '0 4px 4px 0', backgroundColor: '#7C3AED' }} />
               )}
-              <Target className="w-[18px] h-[18px] shrink-0" style={pathname.startsWith('/coach') ? { color: '#7C3AED' } : {}} />
+              <Target className="sidebar-icon" style={pathname.startsWith('/coach') ? { color: '#7C3AED' } : {}} />
               <AnimatePresence>
                 {expanded && (
-                  <motion.span initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }} transition={{ duration: 0.18 }} className="text-[13px] font-medium whitespace-nowrap">
+                  <motion.span initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }} transition={{ duration: 0.18 }} className="sidebar-link-text">
                     Roster
                   </motion.span>
                 )}
@@ -166,19 +146,17 @@ function DesktopSidebar({ pathname, user, logout }) {
         )}
       </nav>
 
-      {/* ── Divider ── */}
-      <div className="h-px bg-white/[0.06] mx-3 mb-3" />
+      <div className="sidebar-divider" />
 
-      {/* ── User card ── */}
-      <div className="px-3 pb-2">
-        <div className="flex items-center gap-3 rounded-xl px-[10px] py-3 bg-white/[0.03] border border-white/[0.06]">
-          {/* Avatar */}
-          <div className="relative shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#CCFF00]/20 to-[#7C3AED]/20 border border-white/10 flex items-center justify-center font-space font-bold text-white text-sm">
+      {/* User card */}
+      <div className="sidebar-user">
+        <div className="user-card">
+          <div className="user-avatar-wrap">
+            <div className="user-avatar">
               {user?.name?.charAt(0).toUpperCase() || 'A'}
             </div>
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#CCFF00] rounded-full border-2 border-[#080808] flex items-center justify-center">
-              <ShieldCheck size={7} className="text-black" />
+            <div className="user-badge">
+              <ShieldCheck size={7} color="#000" />
             </div>
           </div>
 
@@ -189,28 +167,23 @@ function DesktopSidebar({ pathname, user, logout }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -8 }}
                 transition={{ duration: 0.18 }}
-                className="flex-1 min-w-0"
+                className="user-info"
               >
-                <p className="text-[13px] font-semibold text-white truncate">{user?.name || 'Athlete'}</p>
-                <p className="text-[10px] text-[#CCFF00] font-medium tracking-wide">Lv. 42 · Elite</p>
+                <div className="user-name">{user?.name || 'Athlete'}</div>
+                <div className="user-level">Lv. 42 · Elite</div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* XP bar (only expanded) */}
           <AnimatePresence>
             {expanded && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="shrink-0"
+                style={{ flexShrink: 0 }}
               >
-                <button
-                  onClick={logout}
-                  title="Sign out"
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-white/25 hover:text-red-400 hover:bg-red-500/10 transition-all"
-                >
+                <button onClick={logout} title="Sign out" className="user-logout">
                   <LogOut size={15} />
                 </button>
               </motion.div>
@@ -218,26 +191,25 @@ function DesktopSidebar({ pathname, user, logout }) {
           </AnimatePresence>
         </div>
 
-        {/* XP bar */}
         <AnimatePresence>
           {expanded && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden"
+              style={{ overflow: 'hidden' }}
             >
-              <div className="mt-2 px-1">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[9px] font-bold text-white/25 uppercase tracking-widest">XP Progress</span>
-                  <span className="text-[9px] font-bold text-[#CCFF00]">84%</span>
+              <div className="xp-container">
+                <div className="xp-header">
+                  <span className="xp-label">XP Progress</span>
+                  <span className="xp-value">84%</span>
                 </div>
-                <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                <div className="xp-track">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: '84%' }}
                     transition={{ duration: 1.2, ease: 'easeOut' }}
-                    className="h-full rounded-full bg-gradient-to-r from-[#7C3AED] to-[#CCFF00]"
+                    className="xp-fill"
                   />
                 </div>
               </div>
@@ -246,28 +218,16 @@ function DesktopSidebar({ pathname, user, logout }) {
         </AnimatePresence>
       </div>
 
-      {/* ── Settings + Logout (collapsed only) ── */}
       <AnimatePresence>
         {!expanded && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="px-3 pb-5 pt-2 space-y-1"
+            className="sidebar-collapsed-actions"
           >
-            <button
-              className="w-full h-10 rounded-xl flex items-center justify-center text-white/25 hover:text-white hover:bg-white/[0.04] transition-all"
-              title="Settings"
-            >
-              <Settings size={17} />
-            </button>
-            <button
-              onClick={logout}
-              className="w-full h-10 rounded-xl flex items-center justify-center text-white/25 hover:text-red-400 hover:bg-red-500/10 transition-all"
-              title="Sign out"
-            >
-              <LogOut size={17} />
-            </button>
+            <button className="sidebar-collapsed-btn" title="Settings"><Settings size={17} /></button>
+            <button onClick={logout} className="sidebar-collapsed-btn danger" title="Sign out"><LogOut size={17} /></button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -275,35 +235,32 @@ function DesktopSidebar({ pathname, user, logout }) {
   );
 }
 
-/* ─── Mobile Bottom Tab Bar ─────────────────────────────────── */
-const MOBILE_TABS = NAV_ITEMS.slice(0, 5); // show first 5
+const MOBILE_TABS = NAV_ITEMS.slice(0, 5);
 
 function MobileNav({ pathname, user, logout }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      {/* Bottom tab bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-[#080808]/95 backdrop-blur-2xl border-t border-white/[0.08]">
-        <div className="flex items-center justify-around px-2 py-2 pb-safe">
+      <nav className="mobile-nav">
+        <div className="mobile-nav-content">
           {MOBILE_TABS.map(({ href, icon: Icon, label, accent }) => {
             const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
             return (
-              <Link key={href} to={href} className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl group relative">
+              <Link key={href} to={href} className="mobile-nav-item">
                 {isActive && (
                   <motion.div
                     layoutId="mobileActive"
-                    className="absolute inset-0 rounded-xl"
-                    style={{ backgroundColor: `${accent}12` }}
+                    style={{ position: 'absolute', inset: 0, borderRadius: 12, backgroundColor: `${accent}12` }}
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
                 <Icon
-                  className="w-5 h-5 relative z-10 transition-transform duration-200 group-active:scale-90"
+                  className="mobile-nav-icon"
                   style={{ color: isActive ? accent : 'rgba(255,255,255,0.3)' }}
                 />
                 <span
-                  className="text-[10px] font-medium relative z-10 transition-colors"
+                  className="mobile-nav-label"
                   style={{ color: isActive ? accent : 'rgba(255,255,255,0.3)' }}
                 >
                   {label}
@@ -311,8 +268,7 @@ function MobileNav({ pathname, user, logout }) {
                 {isActive && (
                   <motion.div
                     layoutId="mobileActiveDot"
-                    className="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full"
-                    style={{ backgroundColor: accent }}
+                    style={{ position: 'absolute', top: -1, left: '50%', transform: 'translateX(-50%)', width: 32, height: 2, borderRadius: 4, backgroundColor: accent }}
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -320,18 +276,13 @@ function MobileNav({ pathname, user, logout }) {
             );
           })}
 
-          {/* More button */}
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl"
-          >
-            <Menu className="w-5 h-5 text-white/30" />
-            <span className="text-[10px] font-medium text-white/30">More</span>
+          <button onClick={() => setMenuOpen(true)} className="mobile-nav-item">
+            <Menu size={20} color="rgba(255,255,255,0.3)" />
+            <span className="mobile-nav-label" style={{ color: 'rgba(255,255,255,0.3)' }}>More</span>
           </button>
         </div>
       </nav>
 
-      {/* Mobile "More" sheet */}
       <AnimatePresence>
         {menuOpen && (
           <>
@@ -339,7 +290,7 @@ function MobileNav({ pathname, user, logout }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[110]"
+              className="mobile-menu-overlay"
               onClick={() => setMenuOpen(false)}
             />
             <motion.div
@@ -347,46 +298,43 @@ function MobileNav({ pathname, user, logout }) {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-              className="md:hidden fixed bottom-0 left-0 right-0 z-[120] bg-[#0C0C0C] border-t border-white/10 rounded-t-3xl p-6"
+              className="mobile-menu-sheet"
             >
-              {/* Handle */}
-              <div className="w-10 h-1 rounded-full bg-white/15 mx-auto mb-6" />
+              <div className="menu-handle" />
 
-              {/* User info */}
-              <div className="flex items-center gap-3 mb-6 pb-5 border-b border-white/[0.06]">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#CCFF00]/20 to-[#7C3AED]/20 border border-white/10 flex items-center justify-center font-space font-bold text-white text-base">
+              <div className="menu-user">
+                <div className="menu-avatar">
                   {user?.name?.charAt(0).toUpperCase() || 'A'}
                 </div>
                 <div>
-                  <p className="text-[15px] font-semibold text-white">{user?.name || 'Athlete'}</p>
-                  <p className="text-[11px] text-[#CCFF00] font-medium">Level 42 · Elite</p>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: '#fff' }}>{user?.name || 'Athlete'}</div>
+                  <div style={{ fontSize: 11, fontWeight: 500, color: '#CCFF00' }}>Level 42 · Elite</div>
                 </div>
               </div>
 
-              {/* Extra nav (Profile + coach) */}
-              <div className="space-y-1 mb-6">
+              <div className="menu-links">
                 {[NAV_ITEMS[5], ...(user?.role === 'coach' ? [{ href: '/coach', icon: Target, label: 'Coach Roster', accent: '#7C3AED' }] : [])].map(({ href, icon: Icon, label, accent }) => (
                   <Link
                     key={href}
                     to={href}
                     onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/[0.04] transition-colors"
+                    className="menu-link"
                   >
-                    <Icon className="w-5 h-5" style={{ color: accent }} />
-                    <span className="text-[14px] font-medium text-white/70">{label}</span>
-                    <ChevronRight size={14} className="ml-auto text-white/20" />
+                    <Icon size={20} style={{ color: accent }} />
+                    <span className="menu-link-label">{label}</span>
+                    <ChevronRight size={14} className="menu-chevron" />
                   </Link>
                 ))}
-                <button className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/[0.04] transition-colors">
-                  <Settings className="w-5 h-5 text-white/30" />
-                  <span className="text-[14px] font-medium text-white/50">Settings</span>
-                  <ChevronRight size={14} className="ml-auto text-white/20" />
+                <button className="menu-link" style={{ width: '100%', border: 'none', background: 'transparent' }}>
+                  <Settings size={20} color="rgba(255,255,255,0.3)" />
+                  <span className="menu-link-label">Settings</span>
+                  <ChevronRight size={14} className="menu-chevron" />
                 </button>
               </div>
 
               <button
                 onClick={() => { logout(); setMenuOpen(false); }}
-                className="w-full py-3.5 rounded-xl border border-red-500/20 bg-red-500/8 text-red-400 font-medium text-sm flex items-center justify-center gap-2"
+                className="menu-logout"
               >
                 <LogOut size={16} />
                 Sign out
@@ -399,7 +347,6 @@ function MobileNav({ pathname, user, logout }) {
   );
 }
 
-/* ─── Main Export ─────────────────────────────────────────────── */
 export default function Sidebar() {
   const location = useLocation();
   const pathname = location.pathname;
@@ -409,7 +356,6 @@ export default function Sidebar() {
     loadFromStorage();
   }, [loadFromStorage]);
 
-  // initialise CSS var for SSR / first paint
   useEffect(() => {
     document.documentElement.style.setProperty('--sidebar-width', window.innerWidth >= 768 ? '76px' : '0px');
   }, []);

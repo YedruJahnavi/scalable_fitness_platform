@@ -1,0 +1,219 @@
+@import './Login.css';
+
+/* Register specific additions */
+.split-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg-base);
+}
+
+.split-left {
+  display: none;
+  flex: 1;
+  background-color: #080808;
+  position: relative;
+  overflow: hidden;
+  padding: 40px;
+  flex-direction: column;
+  border-right: 1px solid var(--color-border);
+}
+
+@media (min-width: 1024px) {
+  .split-left {
+    display: flex;
+  }
+}
+
+.split-left-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(204,255,0,0.05), transparent 70%);
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.split-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 10;
+}
+
+.split-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--color-accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  box-shadow: 0 0 24px rgba(204,255,0,0.3);
+}
+
+.split-brand-text {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.split-content {
+  margin-top: auto;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.split-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  margin-bottom: 24px;
+}
+
+.split-badge-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--color-accent-primary);
+}
+
+.split-badge-text {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fff;
+}
+
+.split-heading {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.split-desc {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  max-width: 400px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.perks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.perk-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.perk-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.perk-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.split-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  padding: 40px 32px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row > * {
+  flex: 1;
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.role-btn {
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--color-text-secondary);
+}
+
+.role-btn:hover {
+  background-color: rgba(255,255,255,0.02);
+}
+
+.role-btn.active {
+  background-color: rgba(204,255,0,0.1);
+  border-color: var(--color-accent-primary);
+  color: var(--color-text-primary);
+}
+
+.role-icon {
+  color: inherit;
+}
+
+.role-btn.active .role-icon {
+  color: var(--color-accent-primary);
+}
+
+.role-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.role-desc {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
