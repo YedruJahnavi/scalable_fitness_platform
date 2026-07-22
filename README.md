@@ -1,174 +1,163 @@
-# 🏋️ FitTrack - Scalable Fitness Application
+<!-- PROJECT BANNER / LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/YedruJahnavi/scalable_fitness_platform">
+    <img src="frontend/src/assets/logo.png" alt="FitTrack Logo" width="120" height="120">
+  </a>
 
-A modern, full-stack fitness tracking application with real-time analytics, workout management, community features, and wearable device integration.
+  <h3 align="center">FitTrack OS</h3>
 
+  <p align="center">
+    A scalable, full-stack operational command center that unifies biometric data, adaptive AI-driven workout protocols, and real-time analytics to optimize athletic performance.
+    <br />
+    <a href="#about-the-project"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://YedruJahnavi.github.io/scalable_fitness_platform/">View Demo</a>
+    ·
+    <a href="https://github.com/YedruJahnavi/scalable_fitness_platform/issues">Report Bug</a>
+  </p>
+</div>
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#built-with">Built With</a></li>
+    <li><a href="#system-architecture">System Architecture</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#results-and-outputs">Results and Outputs</a></li>
+    <li><a href="#contributors">Contributors</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
 
----
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-## 🚀 Quick Start
+Modern athletes generate vast amounts of biometric and performance data across disconnected devices and ecosystems, making it nearly impossible to glean actionable insights. Traditional fitness applications either act as passive ledgers that require tedious manual entry, or they offer generic, rigid workout routines that fail to account for an individual's dynamic recovery state and progressing capabilities.
 
-### Option 1: Automated Startup (Recommended)
+**FitTrack** solves this fragmentation by providing a unified, scalable ecosystem. By ingesting real-time data—including recovery metrics, active calories, and volume loads—our proprietary platform generates adaptive, AI-driven daily protocols. FitTrack eliminates guesswork, replacing disjointed spreadsheets and isolated apps with an intelligent, dynamic command center designed to optimize long-term athletic progression.
 
-**macOS/Linux:**
-```bash
-chmod +x start-dev.sh
-./start-dev.sh
+### Built With
+
+* [![React][React-shield]][React-url]
+* [![Vite][Vite-shield]][Vite-url]
+* [![Node][Node-shield]][Node-url]
+* [![MongoDB][Mongo-shield]][Mongo-url]
+
+<!-- SYSTEM ARCHITECTURE -->
+## System Architecture
+
+FitTrack operates on a decoupled client-server architecture to ensure high scalability and seamless user experience across all devices.
+
+```mermaid
+graph TD;
+    Client[Web Browser / Mobile Device] -->|REST API via HTTPS| API[Express.js Backend API]
+    API -->|Mongoose ODM| DB[(MongoDB Atlas)]
+    API --> Auth[JWT Authentication Service]
+    Client -->|State Management| Zustand[Zustand Store]
+    Client -->|Routing| Router[React Router]
+    
+    subgraph Frontend [React SPA]
+        Zustand
+        Router
+        UI[Vanilla CSS & Framer Motion]
+    end
 ```
 
-**Windows:**
-```bash
-start-dev.bat
-```
+1. **Presentation Layer:** A Vite-powered React Single Page Application (SPA) utilizing Framer Motion for micro-animations and a custom scoped Vanilla CSS design system for a premium, lightweight UI.
+2. **Application Layer:** An Express.js REST API handling business logic, user authentication, and data validation.
+3. **Data Layer:** A fully managed MongoDB Atlas cluster ensuring secure, scalable, and highly-available persistent storage.
 
-### Option 2: Manual Startup
+<!-- GETTING STARTED -->
+## Getting Started
 
-**Terminal 1 - Backend:**
-```bash
-cd backend
-npm install
-npm run dev
-```
+Follow these steps to get a local copy of FitTrack up and running.
 
-**Terminal 2 - Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### Prerequisites
 
-Then open: **http://localhost:3000**
+* **Node.js** v18+ ([Download](https://nodejs.org/))
+* **Git**
 
----
+### Installation
 
-## 📋 What You'll Need
-
-- **Node.js** v18+ ([Download](https://nodejs.org/))
-- **npm** or **yarn** (comes with Node.js)
-- **Git**
-
-## 🗂️ Project Structure
-
-```
-fitness/
-├── backend/          # Express.js API server
-│   ├── controllers/  # API logic
-│   ├── routes/       # API endpoints
-│   ├── models/       # MongoDB schemas
-│   ├── middleware/   # Auth & validation
-│   └── server.js     # Main app
-│
-├── frontend/         # Next.js React app
-│   ├── app/          # Pages and layouts
-│   ├── components/   # UI components
-│   ├── lib/          # API client & utilities
-│   └── package.json
-│
-├── LOCAL_SETUP.md    # Detailed setup guide
-├── start-dev.sh      # Startup script (macOS/Linux)
-└── start-dev.bat     # Startup script (Windows)
-```
-
----
-
-## 🔧 Environment Setup
-
-### Backend
-Create `backend/.env`:
-```env
-PORT=5001
-NODE_ENV=development
-MONGO_URI=mongodb+srv://<name>_db_user:<password>@scalablefitnessplatform.cxzuciq.mongodb.net/fitpulse
-JWT_SECRET=your_secret_key_here
-JWT_EXPIRES_IN=7d
-```
-
-### Frontend
-Create `frontend/.env.local`:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5001/api
-```
-
----
-
-## 🌐 Access the App
-
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:5001/api
-- **Health Check:** http://localhost:5001/api/health
-
-
----
-
-## 📚 Technology Stack
-
-### Backend
-- **Framework:** Express.js v5.2
-- **Database:** MongoDB (Atlas)
-- **Authentication:** JWT
-- **Additional:** Mongoose, Bcryptjs, Express-validator
-
-### Frontend
-- **Framework:** Next.js 16.2.4
-- **UI Library:** React 19.2
-  
-- **Styling:** Tailwind CSS v4
-- **State:** Zustand
-- **Charts:** Recharts
-- **Icons:** Lucide React
-
----
-
-## 🎯 Key Features
-
-✅ **User Authentication** - Secure JWT-based auth  
-✅ **Workout Tracking** - Create and log workouts  
-✅ **Analytics Dashboard** - Real-time performance metrics  
-✅ **Community Features** - Connect with other users  
-✅ **Coach System** - Personal training support  
-✅ **Wearable Integration** - Apple Watch, Fitbit sync  
-✅ **Responsive Design** - Works on mobile & desktop  
-
----
-
-## 🚀 Development Workflow
-
-1. **Create a branch:**
-   ```bash
-   git checkout -b feature/your-feature-name
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/YedruJahnavi/scalable_fitness_platform.git
+   cd scalable_fitness_platform
    ```
 
+2. **Backend Setup**
+   ```sh
+   cd backend
+   npm install
+   ```
+   Create a `.env` file in the `backend` directory:
+   ```env
+   PORT=5001
+   NODE_ENV=development
+   MONGO_URI=mongodb+srv://<your_db_user>:<your_password>@cluster.mongodb.net/fitpulse
+   JWT_SECRET=your_secure_32_character_secret_here
+   JWT_EXPIRES_IN=7d
+   ```
+   Start the backend server:
+   ```sh
+   npm run dev
+   ```
 
+3. **Frontend Setup**
+   Open a new terminal window:
+   ```sh
+   cd frontend
+   npm install
+   ```
+   Create a `.env.local` file in the `frontend` directory:
+   ```env
+   VITE_API_URL=http://localhost:5001/api
+   ```
+   Start the frontend development server:
+   ```sh
+   npm run dev
+   ```
 
-4. **Open a Pull Request** on GitHub
+<!-- USAGE -->
+## Usage
 
----
+Once both servers are running, navigate to `http://localhost:5173` in your browser. 
 
-## 🛠️ Troubleshooting
+- **Dashboard:** View your weekly progress, recovery score, and active calorie burn.
+- **Workouts:** Log new sessions, track volume load, and view AI-generated adaptive plans.
+- **Analytics:** Visualize your progress over time with responsive Recharts graphs.
+- **Profile:** Manage your settings, themes, and integrated wearable devices.
 
-### Port Already in Use
-```bash
-# Kill process on port 5001
-lsof -i :5001 | grep LISTEN | awk '{print $2}' | xargs kill -9
+<!-- RESULTS AND OUTPUTS -->
+## Results and Outputs
 
-# Kill process on port 3000
-lsof -i :3000 | grep LISTEN | awk '{print $2}' | xargs kill -9
-```
+The finalized application delivers:
+- A perfectly responsive, glassmorphic UI that adapts flawlessly from 4K desktop monitors to mobile screens.
+- Zero-latency perceived state updates via Zustand.
+- Secure, stateless authentication utilizing HTTP-only JWT strategies.
+- Fully automated CI/CD deployment pipelines routing the frontend directly to GitHub Pages on every `main` branch push.
 
-### Cannot Connect to MongoDB
-- Verify `MONGO_URI` in `.env` is correct
-- Check internet connection
-- Ensure MongoDB Atlas IP whitelist includes your IP
+<!-- CONTRIBUTORS -->
+## Contributors
 
-### Frontend Won't Load
-- Clear browser cache (Cmd+Shift+Delete)
-- Check `.env.local` has `NEXT_PUBLIC_API_URL=http://localhost:5001/api`
-- Check browser console for errors
+- **Jahnavi Yedru** - *Lead Engineer / UI/UX Designer* - [GitHub Profile](https://github.com/YedruJahnavi)
 
+<!-- LICENSE -->
+## License
 
+Distributed under the ISC License. See `LICENSE` for more information.
 
-## 📝 License
-
-This project is licensed under the ISC License.
-
-
+<!-- MARKDOWN LINKS & IMAGES -->
+[React-shield]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vite-shield]: https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white
+[Vite-url]: https://vitejs.dev/
+[Node-shield]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
+[Node-url]: https://nodejs.org/
+[Mongo-shield]: https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white
+[Mongo-url]: https://www.mongodb.com/
