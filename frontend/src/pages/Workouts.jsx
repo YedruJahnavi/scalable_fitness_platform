@@ -224,7 +224,7 @@ export default function Workouts() {
                   try {
                     const d = workout.date ? new Date(workout.date) : new Date();
                     dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                  } catch (e) {}
+                  } catch { /* ignore date parsing errors */ }
                   
                   const isRunning = workout.type === 'running';
 

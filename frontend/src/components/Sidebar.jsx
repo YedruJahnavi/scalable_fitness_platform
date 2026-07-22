@@ -3,7 +3,7 @@ import { useAuthStore } from '../lib/store';
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, Flame, Activity, ClipboardEdit,
-  Users, UserCircle, LogOut, Target, Zap, ShieldCheck,
+  Users, UserCircle, LogOut, Target, ShieldCheck,
   ChevronRight, Settings, Menu
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

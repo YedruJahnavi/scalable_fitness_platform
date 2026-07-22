@@ -23,7 +23,9 @@ try {
 }
 
 // Connect MongoDB
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 app.set('trust proxy', envConfig.trustProxy);
 
 // ============ SECURITY MIDDLEWARE ============
@@ -105,11 +107,14 @@ app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 5001;
 const HOST = process.env.HOST || '0.0.0.0';
-app.listen(PORT, HOST, () => {
-  console.log(`🚀 FitPulse API → http://${HOST}:${PORT}`);
-  console.log(`✅ CORS Allowed Origins: ${allowedOrigins.join(', ')}`);
-  console.log(`✅ Environment: ${envConfig.nodeEnv}`);
-  console.log(`✅ Trust Proxy: ${envConfig.trustProxy}`);
-});
+
+if (require.main === module) {
+  app.listen(PORT, HOST, () => {
+    console.log(`🚀 FitPulse API → http://${HOST}:${PORT}`);
+    console.log(`✅ CORS Allowed Origins: ${allowedOrigins.join(', ')}`);
+    console.log(`✅ Environment: ${envConfig.nodeEnv}`);
+    console.log(`✅ Trust Proxy: ${envConfig.trustProxy}`);
+  });
+}
 
 module.exports = app;

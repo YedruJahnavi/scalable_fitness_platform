@@ -1,18 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
-  Activity, 
-  Target, 
   ArrowRight, 
   ShieldCheck,
-  Zap,
   Flame,
-  Dumbbell,
   CheckCircle2,
-  Trophy,
-  Users,
   LineChart,
-  Smartphone
+  Smartphone,
+  Dumbbell
 } from "lucide-react";
 import logoUrl from '../assets/logo.png';
 import './LandingPage.css';
